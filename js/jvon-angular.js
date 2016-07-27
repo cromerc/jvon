@@ -1,4 +1,5 @@
 // This is the angular controller and the code pane
+//noinspection JSUnresolvedFunction
 var jvonapp = angular.module("JVON", ["ngTouch", "ngSanitize"]);
 
 jvonapp.controller('JVONController', ["$scope", "$timeout", "$interval", function ($scope, $timeout ,$interval) {
@@ -6,13 +7,13 @@ jvonapp.controller('JVONController', ["$scope", "$timeout", "$interval", functio
 	$scope.commands = commands;
 
 	// The code pane
-	$scope.code_lines = new Array();
+	$scope.code_lines = [];
 
 	// The result pane
-	$scope.results = new Array();
+	$scope.results = [];
 
 	// What is displayed on the screen
-	$scope.screen = new Array();
+	$scope.screen = [];
 
 	$scope.execution_started = false;
 
@@ -67,14 +68,14 @@ jvonapp.controller('JVONController', ["$scope", "$timeout", "$interval", functio
 		}
 		else {
 			$interval.cancel($scope.blink_promise);
-			element = document.getElementById("pause_code");
+			var element = document.getElementById("pause_code");
 			element.style.opacity = 1;
-			element.style.filter = "alpha(opacity=" + 1 * 100 + ")";
+			element.style.filter = "alpha(opacity=100)";
 		}
 	};
 
 	$scope.blink = function () {
-		element = document.getElementById("pause_code");
+		var element = document.getElementById("pause_code");
 		if ($scope.blink_state == false) {
 			if ($scope.opacity <= 0.1) {
 				$scope.blink_state = true;
@@ -177,7 +178,8 @@ jvonapp.controller('JVONController', ["$scope", "$timeout", "$interval", functio
 		if ($scope.code_lines.length > 0) {
 			// Find the last highlighted line
 			var highlighted = null;
-			for (var i = $scope.code_lines.length - 1; i >= 0; i--) {
+			var i;
+			for (i = $scope.code_lines.length - 1; i >= 0; i--) {
 				if ($scope.code_lines[i].highlighted == true) {
 					highlighted = i;
 					break;
@@ -188,9 +190,9 @@ jvonapp.controller('JVONController', ["$scope", "$timeout", "$interval", functio
 			}
 
 			// Add a line after the last highlighted
-			var new_code_lines = new Array();
+			var new_code_lines = [];
 			var j = 1;
-			for (var i = 0; i < $scope.code_lines.length; i++) {
+			for (i = 0; i < $scope.code_lines.length; i++) {
 				if (highlighted == i) {
 					$scope.code_lines[i].line = j.toString();
 					new_code_lines.push($scope.code_lines[i]);
@@ -217,7 +219,7 @@ jvonapp.controller('JVONController', ["$scope", "$timeout", "$interval", functio
 
 	// Delete the highlighted lines
 	$scope.delete_line = function () {
-		var new_code_lines = new Array();
+		var new_code_lines = [];
 		var j = 1;
 		for (var i = 0; i < $scope.code_lines.length; i++) {
 			if (!$scope.code_lines[i].highlighted) {
@@ -231,17 +233,18 @@ jvonapp.controller('JVONController', ["$scope", "$timeout", "$interval", functio
 
 	// Delete all code lines
 	$scope.clear_code = function () {
-		$scope.code_lines = new Array();
+		$scope.code_lines = [];
 	};
 
 	$scope.select_line = function (line_number, result) {
+		var line;
+		
 		// If execution finished remove all highlights
 		if ($scope.finished == true) {
 			$scope.finished = false;
 			for (var i = 0; i < $scope.code_lines.length; i++) {
 				if ($scope.code_lines[i].highlighted == true) {
 					// Unhighlight
-					var line;
 					line = document.getElementById("line1_" + i.toString());
 					line.className = line.className.substring(0,line.className.length - 21);
 					line = document.getElementById("line2_" + i.toString());
@@ -256,7 +259,6 @@ jvonapp.controller('JVONController', ["$scope", "$timeout", "$interval", functio
 		if ($scope.executing == true && result == true) {
 			if ($scope.code_lines[line_number].highlighted == false) {
 				// Highlight
-				var line;
 				line = document.getElementById("line1_" + line_number.toString());
 				line.className += " code_number_selected";
 				line = document.getElementById("line2_" + line_number.toString());
@@ -267,7 +269,6 @@ jvonapp.controller('JVONController', ["$scope", "$timeout", "$interval", functio
 			}
 			else {
 				// Unhighlight
-				var line;
 				line = document.getElementById("line1_" + line_number.toString());
 				line.className = line.className.substring(0,line.className.length - 21);
 				line = document.getElementById("line2_" + line_number.toString());
@@ -280,7 +281,6 @@ jvonapp.controller('JVONController', ["$scope", "$timeout", "$interval", functio
 		else if ($scope.executing == false && result == false) {
 			if ($scope.code_lines[line_number].highlighted == false) {
 				// Highlight
-				var line;
 				line = document.getElementById("line1_" + line_number.toString());
 				line.className += " line_number_selected";
 				line = document.getElementById("line2_" + line_number.toString());
@@ -291,7 +291,6 @@ jvonapp.controller('JVONController', ["$scope", "$timeout", "$interval", functio
 			}
 			else {
 				// Unhighlight
-				var line;
 				line = document.getElementById("line1_" + line_number.toString());
 				line.className = line.className.substring(0,line.className.length - 21);
 				line = document.getElementById("line2_" + line_number.toString());
@@ -380,7 +379,7 @@ jvonapp.controller('JVONController', ["$scope", "$timeout", "$interval", functio
 	};
 
 	// Watch for changes to the code from external sources and update accordingly
-	$scope.$watch('imported_code',function(newValue, oldValue) {
+	$scope.$watch('imported_code', function (newValue) {
 		if (newValue) {
 			$scope.code_lines = newValue;
 			$scope.imported_code = false;
@@ -417,7 +416,7 @@ jvonapp.controller('JVONController', ["$scope", "$timeout", "$interval", functio
 jvonapp.directive("importFile", function () {
 	return {
 		restrict: "A",
-		link: function ($scope, element, attributes) {
+		link: function ($scope, element) {
 			element.bind('change', function (event) {
 				var file = event.target.files[0];
 
@@ -435,9 +434,9 @@ jvonapp.directive("importFile", function () {
 								$scope.select_line(i, true);
 							}
 						}
-						$scope.code_lines = new Array();
+						$scope.code_lines = [];
 						$scope.$apply();
-					}
+					};
 
 					reader.readAsText(file);
 				}

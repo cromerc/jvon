@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
             $scope.finished = false;
 
             $scope.ac = "";
-            $scope.memory = new Array();
+			$scope.memory = [];
             $scope.memory[0] = null; // 80
             $scope.memory[1] = null; // 81
             $scope.memory[2] = null; // 82
@@ -39,8 +39,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             $scope.disable_code_buttons();
 
-            $scope.results = new Array();
-            $scope.screen = new Array();
+			$scope.results = [];
+			$scope.screen = [];
             $scope.line_number = 0;
             $scope.repeater();
         }
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         $scope.pow($scope.code_lines[$scope.line_number].value);
                         break;
                     case "End":
-                        $scope.End($scope.code_lines[$scope.line_number].value);
+						$scope.End();
                         break;
                     default:
                         alert($scope.code_lines[$scope.line_number].command.name + " is not implemented yet.");
@@ -148,12 +148,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     $scope.check_syntax = function (value) {
         var result;
+		var regex;
 
         if (value == "") {
             return {type: "blank", value: ""};
         }
 
-        var regex = /^(\d+)$/;
+		regex = /^(\d+)$/;
         if ((result = regex.exec(value)) !== null) {
             if (result.index === regex.lastIndex) {
                 regex.lastIndex++;
@@ -162,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return {type: "memory", value: result[1]};
         }
 
-        var regex = /^\[(\d+)\]$/;
+		regex = /^\[(\d+)]$/;
         if ((result = regex.exec(value)) !== null) {
             if (result.index === regex.lastIndex) {
                 regex.lastIndex++;
@@ -171,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return {type: "address", value: result[1]};
         }
 
-        var regex = /^#(-?[0-9]*?\.?[0-9]+)$/;
+		regex = /^#(-?[0-9]*?\.?[0-9]+)$/;
         if ((result = regex.exec(value)) !== null) {
             if (result.index === regex.lastIndex) {
                 regex.lastIndex++;
@@ -185,18 +186,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     $scope.check_memory_address = function(value) {
         value = parseFloat(value);
-        if (value < 80 || value > 85) {
-            return false;
-        }
-        return true;
+		return !(value < 80 || value > 85);
     };
 
     $scope.check_memory_value = function(value) {
         value = parseFloat(value) - 80;
-        if ($scope.memory[value] == null) {
-            return false;
-        }
-        return true;
+		return $scope.memory[value] != null;
     };
 
     $scope.rda = function (value) {
@@ -223,9 +218,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 var new_memory = $scope.memory[syntax.value];
 
                 var regex = /^\d+$/;
-                var result;
 
-                if ((result = regex.exec(new_memory)) !== null && $scope.check_memory_address(new_memory) == true) {
+				if (regex.exec(new_memory) !== null && $scope.check_memory_address(new_memory) == true) {
                     $scope.rda_value = new_memory;
                     $scope.show_input_prompt();
                 }
@@ -245,9 +239,8 @@ document.addEventListener('DOMContentLoaded', function () {
         var value = document.getElementById("rda").value;
 
         var regex = /^-?[0-9]*?\.?[0-9]+$/;
-        var result;
 
-        if ((result = regex.exec(value)) !== null) {
+		if (regex.exec(value) !== null) {
             value = parseFloat(value);
             $scope.rda_value = parseFloat($scope.rda_value);
 
@@ -329,7 +322,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         else if (syntax.type == "memory") {
             if ($scope.check_memory_address(value) == true) {
-                new_value = parseFloat(value) - 80;
+				var new_value = parseFloat(value) - 80;
                 $scope.memory[new_value] = $scope.ac;
 
                 $scope.create_result($scope.line_number, parseFloat(value), $scope.ac);
@@ -350,9 +343,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 var new_memory = $scope.memory[syntax.value];
 
                 var regex = /^\d+$/;
-                var result;
 
-                if ((result = regex.exec(new_memory)) !== null && $scope.check_memory_address(new_memory) == true) {
+				if (regex.exec(new_memory) !== null && $scope.check_memory_address(new_memory) == true) {
                     new_memory = parseFloat(new_memory) - 80;
                     $scope.memory[new_memory] = $scope.ac;
 
@@ -519,13 +511,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     $scope.div = function (value) {
         var syntax = $scope.check_syntax(value);
+		var regex;
         if (syntax.type == "number") {
             $scope.ac = parseFloat($scope.ac) / parseFloat(syntax.value);
 
-            var regex = /^-?[0-9]*\.?[0-9]+$/;
-            var result;
+			regex = /^-?[0-9]*\.?[0-9]+$/;
 
-            if ((result = regex.exec($scope.ac)) !== null) {
+			if (regex.exec($scope.ac) !== null) {
                 $scope.create_result($scope.line_number, "ac", $scope.ac);
                 $scope.line_number++;
                 $scope.repeater();
@@ -540,10 +532,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 value = $scope.memory[value - 80];
                 $scope.ac = parseFloat($scope.ac) / parseFloat(value);
 
-				var regex = /^-?[0-9]*\.?[0-9]+$/;
-                var result;
+				regex = /^-?[0-9]*\.?[0-9]+$/;
 
-                if ((result = regex.exec($scope.ac)) !== null) {
+				if (regex.exec($scope.ac) !== null) {
                     $scope.create_result($scope.line_number, "ac", $scope.ac);
                     $scope.line_number++;
                     $scope.repeater();
@@ -564,10 +555,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 value = parseFloat($scope.memory[temp_value - 80]);
                 $scope.ac = parseFloat($scope.ac) / value;
 
-                var regex = /^-?[0-9]*\.?[0-9]+$/;
-                var result;
+				regex = /^-?[0-9]*\.?[0-9]+$/;
 
-                if ((result = regex.exec($scope.ac)) !== null) {
+				if (regex.exec($scope.ac) !== null) {
                     $scope.create_result($scope.line_number, "ac", $scope.ac);
                     $scope.line_number++;
                     $scope.repeater();
@@ -686,13 +676,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     $scope.sqr = function (value) {
         var syntax = $scope.check_syntax(value);
+		var sqr;
         if (syntax.type == "blank") {
             if ($scope.ac == "") {
                 alert($scope.strings.error_ac);
                 $scope.stop_code();
             }
             else {
-                var sqr = Math.sqrt(parseFloat($scope.ac));
+				sqr = Math.sqrt(parseFloat($scope.ac));
                 if (sqr == "NaN") {
                     alert($scope.strings.error_math);
                     $scope.stop_code();
@@ -706,7 +697,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
         else if (syntax.type == "number") {
-            var sqr = Math.sqrt(syntax.value);
+			sqr = Math.sqrt(parseFloat(syntax.value));
             if (sqr == "NaN") {
                 alert($scope.strings.error_math);
                 $scope.stop_code();
@@ -721,7 +712,7 @@ document.addEventListener('DOMContentLoaded', function () {
         else if (syntax.type == "memory") {
             if ($scope.check_memory_address(value) == true && $scope.check_memory_value(value) == true) {
                 value = parseFloat($scope.memory[value - 80]);
-                var sqr = Math.sqrt(value);
+				sqr = Math.sqrt(value);
                 if (sqr == "NaN") {
                     alert($scope.strings.error_math);
                     $scope.stop_code();
@@ -742,7 +733,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var temp_value = $scope.memory[syntax.value - 80];
             if ($scope.check_memory_address(temp_value) == true && $scope.check_memory_value(temp_value) == true) {
                 value = parseFloat($scope.memory[temp_value - 80]);
-                var sqr = Math.sqrt(value);
+				sqr = Math.sqrt(value);
                 if (sqr == "NaN") {
                     alert($scope.strings.error_math);
                     $scope.stop_code();
@@ -767,9 +758,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     $scope.pow = function (value) {
         var syntax = $scope.check_syntax(value);
+		var new_value;
         if (syntax.type == "number") {
             if ($scope.ac != "" || $scope.ac == 0) {
-                var new_value;
                 value = parseFloat(syntax.value);
                 if (value < 0) {
                     // The exponent is negative
@@ -793,7 +784,6 @@ document.addEventListener('DOMContentLoaded', function () {
         else if (syntax.type == "memory") {
             if ($scope.check_memory_address(value) == true) {
                 value = parseFloat($scope.memory[value - 80]);
-                var new_value;
                 if (value < 0) {
                     // The exponent is negative
                     value = Math.abs(parseFloat(value));
@@ -817,7 +807,6 @@ document.addEventListener('DOMContentLoaded', function () {
             var temp_value = $scope.memory[syntax.value - 80];
             if ($scope.check_memory_address(temp_value) == true) {
                 value = parseFloat($scope.memory[temp_value - 80]);
-                var new_value;
                 if (value < 0) {
                     // The exponent is negative
                     value = Math.abs(parseFloat(value));
@@ -850,9 +839,9 @@ document.addEventListener('DOMContentLoaded', function () {
         else {
             return base * $scope.pow_repeat(exponent -1, base);
         }
-    }
+	};
 
-    $scope.End = function (value) {
+	$scope.End = function () {
         // Rap-up everything
         $scope.stop_code();
     };

@@ -1,5 +1,5 @@
-var fileContents = new Array();
-var fileNames = new Array();
+var fileContents = [];
+var fileNames = [];
 
 function handleFileSelect(evt) {
     evt.stopPropagation();
@@ -46,8 +46,8 @@ function compareFiles(fileContents, fileNames) {
 }
 
 function resetArrays() {
-    fileNames = new Array();
-    fileContents = new Array();
+    fileNames = [];
+    fileContents = [];
 }
 
 function handleDragOver(evt) {

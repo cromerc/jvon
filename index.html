@@ -32,8 +32,7 @@
 
     <div id="input_prompt" class="input_prompt">
 	<span class="input_prompt_vertical">
-	    {{strings.input_value}}
-	    <input autocomplete="off" type="text" name="rda" id="rda" />
+	    <label for="rda">{{strings.input_value}}</label><input autocomplete="off" type="text" name="rda" id="rda"/>
 	    <input ng-click="rda_value_received();" type="button" value="Ingresar" />
 	</span>
     </div>
@@ -43,14 +42,19 @@
     <table class="title_table">
 	<tr>
 	    <td class="blank_title_cell"><img src="ubblogo.png" /></td>
-	    <td class="project_name">{{strings.project_name}} <input type="text" id="project_name" name="project_name" value="" /></td>
+		<td class="project_name"><label for="project_name">{{strings.project_name}} </label><input type="text"
+																								   id="project_name"
+																								   name="project_name"
+																								   value=""/></td>
 	    <td class="options">
 		<input ng-click="show_help();" type="button" value="{{strings.help}}" />
-		<select ng-change="change_language();" ng-model="language">
-		    <option value="0">{{strings.spanish}}</option>
-		    <option value="1">{{strings.english}}</option>
-		</select>
-	    </td>
+			<label>
+				<select ng-change="change_language();" ng-model="language">
+					<option value="0">{{strings.spanish}}</option>
+					<option value="1">{{strings.english}}</option>
+				</select>
+			</label>
+		</td>
 	</tr>
     </table>
     <br />
@@ -62,8 +66,16 @@
 		    <table align="center" class="table_background">
 			<tr ng-repeat="(key, line) in code_lines">
 			    <td id="line1_{{key}}" ng-click="select_line(key, false);" class="table_cell line_number_td" >{{line.line}}</td>
-			    <td id="line2_{{key}}" class="table_cell"><select ng-model="line.command" ng-options="command.name for command in commands"></select></td>
-			    <td id="line3_{{key}}" class="table_cell"><input type="text" ng-model="line.value" /></td>
+				<td id="line2_{{key}}" class="table_cell">
+					<label>
+						<select ng-model="line.command" ng-options="command.name for command in commands"></select>
+					</label>
+				</td>
+				<td id="line3_{{key}}" class="table_cell">
+					<label>
+						<input type="text" ng-model="line.value"/>
+					</label>
+				</td>
 			</tr>
 		    </table>
 		</div>
@@ -125,24 +137,26 @@
 		<input ng-click="execute_code();" id="execute_code" type="button" value="{{strings.execute_code}}" />
 		<input ng-click="pause_code();" id="pause_code" type="button" value="{{strings.pause_code}}" disabled="disabled" />
 		<input ng-click="stop_code();" id="stop_code" type="button" value="{{strings.stop_code}}" disabled="disabled" />
-		{{strings.interval}}
-		<select ng-change="change_speed();" ng-model="speed">
-		    <option value="0">0</option>
-		    <option value="1">1</option>
-		    <option value="2">2</option>
-		    <option value="3">3</option>
-		    <option value="4">4</option>
-		    <option value="5">5</option>
-		</select>
+			<label>
+				{{strings.interval}}
+				<select ng-change="change_speed();" ng-model="speed">
+					<option value="0">0</option>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+				</select>
+			</label>
 	    </td>
 	</tr>
     </table>
     <div class="credits">
-	<b>JVON Web</b><br />
-	{{strings.credits_description}}&nbsp;<b>{{strings.credits_john}}</b><br />
-	{{strings.credits_cromer}}<br />
-	Ingeniería Civil en Informática, Universidad del Bío Bío, 2015<br />
-	<a target="_blank" href="jvon-1.0.0.0.apk">Version android</href>
+		<b>JVON Web</b><br/>
+		{{strings.credits_description}}&nbsp;<b>{{strings.credits_john}}</b><br/>
+		{{strings.credits_cromer}}<br/>
+		Ingeniería Civil en Informática, Universidad del Bío Bío, 2015<br/>
+		<a target="_blank" href="jvon-1.0.0.0.apk">Version android</a>
     </div>
 </body>
 </html>
