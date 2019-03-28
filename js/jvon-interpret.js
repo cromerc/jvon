@@ -782,7 +782,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
         else if (syntax.type == "memory") {
-            if ($scope.check_memory_address(value) == true) {
+			if ($scope.check_memory_address(value) == true && $scope.check_memory_value(value) == true) {
                 value = parseFloat($scope.memory[value - 80]);
                 if (value < 0) {
                     // The exponent is negative
