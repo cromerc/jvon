@@ -678,7 +678,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var syntax = $scope.check_syntax(value);
 		var sqr;
         if (syntax.type == "blank") {
-            if ($scope.ac == "") {
+            if (typeof $scope.ac != 'number') {
                 alert($scope.strings.error_ac);
                 $scope.stop_code();
             }
