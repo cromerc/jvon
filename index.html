@@ -62,7 +62,7 @@
 			<td class="main_td">
 				{{strings.code}}<hr />
 				<div class="scrollcode">
-					<table align="center" class="table_background">
+					<table style="margin: 0 auto;" class="table_background">
 						<tr ng-repeat="(key, line) in code_lines">
 							<td id="line1_{{key}}" ng-click="select_line(key, false);" class="table_cell line_number_td" >{{line.line}}</td>
 							<td id="line2_{{key}}" class="table_cell">
@@ -91,10 +91,10 @@
 				{{strings.result}}
 				<hr />
 				<div class="scrollresult">
-					<table align="center">
+					<table style="margin: 0 auto;">
 						<tr>
 							<td class="result_table">
-								<table align="center" class="table_background">
+								<table style="margin: 0 auto;" class="table_background">
 									<tr>
 										<td class="title_td">Ln</td>
 										<td class="title_td">Ac</td>
@@ -120,7 +120,7 @@
 								</table>
 							</td>
 							<td class="result_table">
-								<table align="center" class="table_background">
+								<table style="margin: 0 auto;" class="table_background">
 									<tr>
 										<td class="title_td">{{strings.screen}}</td>
 									</tr>
