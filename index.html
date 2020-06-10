@@ -32,124 +32,123 @@
 
     <div id="input_prompt" class="input_prompt">
 	<span class="input_prompt_vertical">
-	    <label for="rda">{{strings.input_value}}</label><input autocomplete="off" type="text" name="rda" id="rda"/>
-	    <input ng-click="rda_value_received();" type="button" value="Ingresar" />
+		<label for="rda">{{strings.input_value}}</label><input autocomplete="off" type="text" name="rda" id="rda"/>
+		<input ng-click="rda_value_received();" type="button" value="Ingresar" />
 	</span>
     </div>
 
     <div id="help_window" class="help_window" ng-bind-html="strings.help_text"></div>
 
     <table class="title_table">
-	<tr>
-	    <td class="blank_title_cell"><img src="ubblogo.png" /></td>
-		<td class="project_name"><label for="project_name">{{strings.project_name}} </label><input type="text"
-																								   id="project_name"
-																								   name="project_name"
-																								   value=""/></td>
-	    <td class="options">
-		<input ng-click="show_help();" type="button" value="{{strings.help}}" />
-			<label>
-				<select ng-change="change_language();" ng-model="language">
-					<option value="0">{{strings.spanish}}</option>
-					<option value="1">{{strings.english}}</option>
-				</select>
-			</label>
-		</td>
-	</tr>
+		<tr>
+			<td class="blank_title_cell"><img src="ubblogo.png" /></td>
+			<td class="project_name">
+				<label for="project_name">{{strings.project_name}} </label><input type="text" id="project_name" name="project_name" value=""/>
+			</td>
+			<td class="options">
+				<input ng-click="show_help();" type="button" value="{{strings.help}}" />
+				<label>
+					<select ng-change="change_language();" ng-model="language">
+						<option value="0">{{strings.spanish}}</option>
+						<option value="1">{{strings.english}}</option>
+					</select>
+				</label>
+			</td>
+		</tr>
     </table>
     <br />
     <table class="main_table">
-	<tr>
-	    <td class="main_td">
-		{{strings.code}}<hr />
-		<div class="scrollcode">
-		    <table align="center" class="table_background">
-			<tr ng-repeat="(key, line) in code_lines">
-			    <td id="line1_{{key}}" ng-click="select_line(key, false);" class="table_cell line_number_td" >{{line.line}}</td>
-				<td id="line2_{{key}}" class="table_cell">
-					<label>
-						<select ng-model="line.command" ng-options="command.name for command in commands"></select>
-					</label>
-				</td>
-				<td id="line3_{{key}}" class="table_cell">
-					<label>
-						<input type="text" ng-model="line.value"/>
-					</label>
-				</td>
-			</tr>
-		    </table>
-		</div>
-		<hr />
-		<input ng-click="add_line();" id="add_line" type="button" value="{{strings.add_line}}" />
-		<input ng-click="insert_line();" id="insert_line" type="button" value="{{strings.insert_line}}" />
-		<input ng-click="delete_line();" id="delete_line" type="button" value="{{strings.delete_line}}" />
-		<input ng-click="clear_code();" id="clear_code" type="button" value="{{strings.clear_code}}" />
-		<input ng-click="export_code();" id="export_code" type="button" value="{{strings.export_code}}" />
-		{{strings.import_code}}
-		<input import-file type="file" id="file" />
-	    </td>
-	    <td class="main_td">
-		{{strings.result}}
-		<hr />
-		<div class="scrollresult">
-		    <table align="center">
-			<tr>
-			    <td class="result_table">
-				<table align="center" class="table_background">
-				    <tr>
-					<td class="title_td">Ln</td>
-					<td class="title_td">Ac</td>
-					<td class="title_td">80</td>
-					<td class="title_td">81</td>
-					<td class="title_td">82</td>
-					<td class="title_td">83</td>
-					<td class="title_td">84</td>
-					<td class="title_td">85</td>
-					<td class="title_td">Wrt</td>
-				    </tr>
-				    <tr ng-repeat="result in results">
-					<td class="table_cell">{{result.line}}</td>
-					<td class="table_cell">{{result.ac}}</td>
-					<td class="table_cell">{{result.first}}</td>
-					<td class="table_cell">{{result.second}}</td>
-					<td class="table_cell">{{result.third}}</td>
-					<td class="table_cell">{{result.fourth}}</td>
-					<td class="table_cell">{{result.fifth}}</td>
-					<td class="table_cell">{{result.sixth}}</td>
-					<td class="table_cell">{{result.wrt}}</td>
-				    </tr>
-				</table>
-			    </td>
-			    <td class="result_table">
-				<table align="center" class="table_background">
-				    <tr>
-					<td class="title_td">{{strings.screen}}</td>
-				    </tr>
-				    <tr ng-repeat="line in screen">
-					<td class="table_cell">{{line.result}}</td>
-				    </tr>
-				</table>
-			    </td>
-			</tr>
-		    </table>
-		</div>
-		<hr />
-		<input ng-click="execute_code();" id="execute_code" type="button" value="{{strings.execute_code}}" />
-		<input ng-click="pause_code();" id="pause_code" type="button" value="{{strings.pause_code}}" disabled="disabled" />
-		<input ng-click="stop_code();" id="stop_code" type="button" value="{{strings.stop_code}}" disabled="disabled" />
-			<label>
-				{{strings.interval}}
-				<select ng-change="change_speed();" ng-model="speed">
-					<option value="0">0</option>
-					<option value="1">1</option>
-					<option value="2">2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
-					<option value="5">5</option>
-				</select>
-			</label>
-	    </td>
-	</tr>
+		<tr>
+			<td class="main_td">
+				{{strings.code}}<hr />
+				<div class="scrollcode">
+					<table align="center" class="table_background">
+						<tr ng-repeat="(key, line) in code_lines">
+							<td id="line1_{{key}}" ng-click="select_line(key, false);" class="table_cell line_number_td" >{{line.line}}</td>
+							<td id="line2_{{key}}" class="table_cell">
+								<label>
+									<select ng-model="line.command" ng-options="command.name for command in commands"></select>
+								</label>
+							</td>
+							<td id="line3_{{key}}" class="table_cell">
+								<label>
+									<input type="text" ng-model="line.value"/>
+								</label>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<hr />
+				<input ng-click="add_line();" id="add_line" type="button" value="{{strings.add_line}}" />
+				<input ng-click="insert_line();" id="insert_line" type="button" value="{{strings.insert_line}}" />
+				<input ng-click="delete_line();" id="delete_line" type="button" value="{{strings.delete_line}}" />
+				<input ng-click="clear_code();" id="clear_code" type="button" value="{{strings.clear_code}}" />
+				<input ng-click="export_code();" id="export_code" type="button" value="{{strings.export_code}}" />
+				{{strings.import_code}}
+				<input import-file type="file" id="file" />
+			</td>
+			<td class="main_td">
+				{{strings.result}}
+				<hr />
+				<div class="scrollresult">
+					<table align="center">
+						<tr>
+							<td class="result_table">
+								<table align="center" class="table_background">
+									<tr>
+										<td class="title_td">Ln</td>
+										<td class="title_td">Ac</td>
+										<td class="title_td">80</td>
+										<td class="title_td">81</td>
+										<td class="title_td">82</td>
+										<td class="title_td">83</td>
+										<td class="title_td">84</td>
+										<td class="title_td">85</td>
+										<td class="title_td">Wrt</td>
+									</tr>
+									<tr ng-repeat="result in results">
+										<td class="table_cell">{{result.line}}</td>
+										<td class="table_cell">{{result.ac}}</td>
+										<td class="table_cell">{{result.first}}</td>
+										<td class="table_cell">{{result.second}}</td>
+										<td class="table_cell">{{result.third}}</td>
+										<td class="table_cell">{{result.fourth}}</td>
+										<td class="table_cell">{{result.fifth}}</td>
+										<td class="table_cell">{{result.sixth}}</td>
+										<td class="table_cell">{{result.wrt}}</td>
+									</tr>
+								</table>
+							</td>
+							<td class="result_table">
+								<table align="center" class="table_background">
+									<tr>
+										<td class="title_td">{{strings.screen}}</td>
+									</tr>
+									<tr ng-repeat="line in screen">
+										<td class="table_cell">{{line.result}}</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<hr />
+				<input ng-click="execute_code();" id="execute_code" type="button" value="{{strings.execute_code}}" />
+				<input ng-click="pause_code();" id="pause_code" type="button" value="{{strings.pause_code}}" disabled="disabled" />
+				<input ng-click="stop_code();" id="stop_code" type="button" value="{{strings.stop_code}}" disabled="disabled" />
+				<label>
+					{{strings.interval}}
+					<select ng-change="change_speed();" ng-model="speed">
+						<option value="0">0</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select>
+				</label>
+			</td>
+		</tr>
     </table>
     <div class="credits">
 		<b>JVON Web 1.1.2</b><br/>
